@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+/* ✅ Expose your tokens to Tailwind utilities */
+@theme {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+}
+
+/* ✅ Your actual design tokens */
+:root {
+  --background: 220 20% 10%;
+  --foreground: 210 20% 95%;
+
+  --card: 220 18% 14%;
+  --card-foreground: 210 20% 95%;
+
+  --popover: 220 18% 14%;
+  --popover-foreground: 210 20% 95%;
+
+  --primary: 199 89% 55%;
+  --primary-foreground: 220 20% 10%;
+
+  --secondary: 220 15% 18%;
+  --secondary-foreground: 210 20% 90%;
+
+  --muted: 220 15% 20%;
+  --muted-foreground: 215 15% 55%;
+
+  --accent: 199 89% 55%;
+  --accent-foreground: 220 20% 10%;
+
+  --destructive: 0 70% 50%;
+  --destructive-foreground: 210 40% 98%;
+
+  --border: 220 15% 22%;
+  --input: 220 15% 22%;
+  --ring: 199 89% 55%;
+
+  --radius: 1rem;
+
+  --gradient-bg: linear-gradient(
+    135deg,
+    hsl(220 20% 8%) 0%,
+    hsl(225 22% 12%) 50%,
+    hsl(220 18% 10%) 100%
+  );
+
+  --shadow-glow: 0 0 20px hsl(199 89% 55% / 0.2);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    background: var(--gradient-bg);
+    min-height: 100vh;
+  }
+}
+
+@layer utilities {
+  .glow {
+    box-shadow: var(--shadow-glow);
+  }
+}
