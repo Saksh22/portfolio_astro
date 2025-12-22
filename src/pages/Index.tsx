@@ -5,11 +5,11 @@ import ChatInput from "../components/ChatInput";
 import PromptButton from "../components/PromptButton";
 import ChatMessage from "../components/ChatMessage";
 import AboutSection from "../components/sections/AboutSection";
-// import ProjectsSection from "@/components/sections/ProjectsSection";
-// import SkillsSection from "@/components/sections/SkillsSection";
-// import FunSection from "@/components/sections/FunSection";
-// import ContactSection from "@/components/sections/ContactSection";
-// import ExperienceSection from "@/components/sections/ExperienceSection";
+import ProjectsSection from "@/components/sections/ProjectsSection";
+import SkillsSection from "@/components/sections/SkillsSection";
+import FunSection from "@/components/sections/FunSection";
+import ContactSection from "@/components/sections/ContactSection";
+import ExperienceSection from "@/components/sections/ExperienceSection";
 
 type Section = "about" | "projects" | "skills" | "fun" | "contact" | "experience";
 
@@ -66,7 +66,7 @@ const Index = () => {
   // Auto-scroll to bottom when new messages appear
   useEffect(() => {
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+      chatContainerRef.current?.scrollIntoView({block: "end"});
     }
   }, [messages]);
 
@@ -76,27 +76,27 @@ const Index = () => {
     switch (section) {
       case "about":
         return <AboutSection enableTyping={isLatest} />;
-    //   case "experience":
-    //     return <ExperienceSection enableTyping={isLatest} />;
-    //   case "projects":
-    //     return <ProjectsSection enableTyping={isLatest} />;
-    //   case "skills":
-    //     return <SkillsSection enableTyping={isLatest} />;
-    //   case "fun":
-    //     return <FunSection enableTyping={isLatest} />;
-    //   case "contact":
-    //     return <ContactSection enableTyping={isLatest} />;
-    //   default:
-    //     return null;
+      case "experience":
+        return <ExperienceSection enableTyping={isLatest} />;
+      case "projects":
+        return <ProjectsSection enableTyping={isLatest} />;
+      case "skills":
+        return <SkillsSection enableTyping={isLatest} />;
+      case "fun":
+        return <FunSection enableTyping={isLatest} />;
+      case "contact":
+        return <ContactSection enableTyping={isLatest} />;
+      default:
+        return null;
     }
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="h-dvh flex flex-col">
       {/* Chat area */}
       <div 
         ref={chatContainerRef}
-        className="flex-1 overflow-y-auto px-4 py-8"
+        className="chat-scroll flex-1 overflow-y-auto px-4 py-8 pb-40"
       >
         <div className="max-w-3xl mx-auto space-y-6">
           {/* Initial header - only show when no messages */}

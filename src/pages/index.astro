@@ -1,7 +1,36 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import AppMount from "../components/AppMount";
+import { getEntry, getCollection  } from "astro:content";
+
+const entry = await getEntry("site", "about");
+if (!entry) throw new Error("Missing content");
+
+const about = entry.data;
+
+const experienceEntries = await getCollection("experience");
+const experiences = experienceEntries
+  .map((e) => e.data)
+  .sort((a, b) => (a.order ?? 9999) - (b.order ?? 9999));
+
+const projectEntries = await getCollection("projects");
+const projects = projectEntries
+  .map((p) => p.data)
+  .filter((p) => p.featured)
+  .sort((a, b) => (a.order ?? 9999) - (b.order ?? 9999));
+
+const skillsEntry = await getEntry("skills", "skills");
+if (!skillsEntry) throw new Error("Missing skills content");
+const skills = skillsEntry.data;
+
+const funEntry = await getEntry("fun", "fun");
+if (!funEntry) throw new Error("Missing fun content");
+const fun = funEntry.data;
+
+const contactEntry = await getEntry("contact", "contact");
+if (!contactEntry) throw new Error("Missing contact content");
+const contact = contactEntry.data;
 ---
 <BaseLayout title="Portfolio">
-  <AppMount client:load />
+  <AppMount about={about} experiences={experiences} projects={projects} skills={skills} fun={fun} contact={contact} client:load />
 </BaseLayout>

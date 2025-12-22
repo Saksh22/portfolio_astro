@@ -69,12 +69,19 @@
   * {
     @apply border-border;
   }
+  html,
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    background: var(--gradient-bg);
+    height: 100%;
+    overflow: hidden;
+  }
 
   body {
     @apply bg-background text-foreground antialiased;
     font-family: "Plus Jakarta Sans", sans-serif;
     background: var(--gradient-bg);
-    min-height: 100vh;
   }
 }
 
@@ -82,4 +89,29 @@
   .glow {
     box-shadow: var(--shadow-glow);
   }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.6s ease forwards;
+}
+
+/* Prevent browser scroll anchoring glitches when content height changes */
+.chat-scroll {
+  scrollbar-width: none;       /* Firefox */
+  -ms-overflow-style: none;    /* IE / Edge */
+}
+
+.chat-scroll::-webkit-scrollbar {
+  display: none;               /* Chrome / Safari */
 }
