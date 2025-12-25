@@ -1,6 +1,6 @@
 import { useTypingEffect } from "@/hooks/useTypeEffect";
 import { useCMS } from "@/context/CMSContext";
-import { Code2, Server, Palette, Users, Brain } from "lucide-react";
+import { Code2, Server, Cloud, Brain } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 interface SkillsSectionProps {
@@ -10,8 +10,7 @@ interface SkillsSectionProps {
 const iconMap: Record<string, LucideIcon> = {
   code: Code2,
   server: Server,
-  palette: Palette,
-  users: Users,
+  cloud: Cloud,
   brain: Brain,
 };
 

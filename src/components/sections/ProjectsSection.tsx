@@ -8,9 +8,9 @@ interface ProjectsSectionProps {
 }
 
 const colorClasses = {
-  blue: "from-blue-500/10 to-cyan-500/10",
+  blue: "from-blue-500/10 to-green-500/10",
   purple: "from-purple-500/10 to-pink-500/10",
-  amber: "from-amber-500/10 to-orange-500/10",
+  amber: "from-amber-500/10 to-yellow-500/10",
 };
 
 const ProjectsSection = ({ enableTyping = false }: ProjectsSectionProps) => {

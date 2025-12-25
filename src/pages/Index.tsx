@@ -1,17 +1,18 @@
 import { useState, useRef, useEffect } from "react";
-import { User, Briefcase, Layers, Sparkles, MessageCircle, Building2 } from "lucide-react";
-import ChatAvatar from "../components/ChatAvatar";
+import SplashCursor from "../components/SplashCursor";
+import { User } from "lucide-react";
 import ChatInput from "../components/ChatInput";
-import PromptButton from "../components/PromptButton";
+import PromptSelector from "../components/PromptSelector";
 import ChatMessage from "../components/ChatMessage";
+import LandingPage from "../components/LandingPage";
 import AboutSection from "../components/sections/AboutSection";
 import ProjectsSection from "@/components/sections/ProjectsSection";
 import SkillsSection from "@/components/sections/SkillsSection";
 import FunSection from "@/components/sections/FunSection";
 import ContactSection from "@/components/sections/ContactSection";
 import ExperienceSection from "@/components/sections/ExperienceSection";
-
-type Section = "about" | "projects" | "skills" | "fun" | "contact" | "experience";
+import { prompts } from "../lib/prompts";
+import type { Section } from "../lib/prompts";
 
 interface Message {
   id: string;
@@ -19,15 +20,6 @@ interface Message {
   content: string;
   section?: Section;
 }
-
-const prompts: { id: Section; icon: typeof User; label: string; question: string }[] = [
-  { id: "about", icon: User, label: "Me", question: "Tell me about yourself" },
-  { id: "experience", icon: Building2, label: "Experience", question: "What is your work experience?" },
-  { id: "projects", icon: Briefcase, label: "Projects", question: "What projects have you worked on?" },
-  { id: "skills", icon: Layers, label: "Skills", question: "What are your skills?" },
-  { id: "fun", icon: Sparkles, label: "Fun", question: "Share some fun facts about yourself" },
-  { id: "contact", icon: MessageCircle, label: "Contact", question: "How can I contact you?" },
-];
 
 const Index = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -96,83 +88,25 @@ const Index = () => {
   };
 
   return (
-    <div className="h-dvh flex flex-col">
+    <div className="h-dvh flex flex-col relative">
       {/* Landing page - centered layout when no messages */}
       {messages.length === 0 ? (
-        <div className="flex-1 flex items-center justify-center px-4">
-          <div className="w-full max-w-3xl mx-auto text-center space-y-8">
-            {/* Avatar */}
-            <div 
-              className="flex justify-center"
-              style={{ 
-                animation: "scale-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards",
-                opacity: 0 
-              }}
-            >
-              <ChatAvatar />
-            </div>
-            
-            {/* Greeting and Title */}
-            <div 
-              style={{ 
-                animation: "fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards",
-                opacity: 0 
-              }}
-            >
-              <p className="text-muted-foreground mb-2 text-lg">Hey, My Name is</p>
-              <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-                Sakshi Khochare
-              </h1>
-            </div>
-            <p 
-              className="text-muted-foreground"
-              style={{ 
-                animation: "fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards",
-                opacity: 0 
-              }}
-            >
-              Click on one of the prompts below to learn more about me!
-            </p>
-            {/* Chat Input */}
-            <div 
-              className="flex justify-center"
-              style={{ 
-                animation: "fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.7s forwards",
-                opacity: 0 
-              }}
-            >
-              <ChatInput />
-            </div>
-
-            {/* Prompt buttons */}
-            <div className="flex justify-center">
-              <div className="flex flex-wrap justify-center gap-2 md:gap-3">
-                {prompts.map((prompt, index) => (
-                  <div
-                    key={prompt.id}
-                    style={{ 
-                      animation: `fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.9 + index * 0.1}s forwards`,
-                      opacity: 0 
-                    }}
-                  >
-                    <PromptButton
-                      icon={prompt.icon}
-                      label={prompt.label}
-                      isActive={currentSection === prompt.id}
-                      onClick={() => handlePromptClick(prompt.id)}
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
+        <>
+          {/* SplashCursor as background - only on landing page */}
+          <div className="fixed inset-0 z-0">
+            <SplashCursor />
           </div>
-        </div>
+          <LandingPage 
+            currentSection={currentSection}
+            onPromptClick={handlePromptClick}
+          />
+        </>
       ) : (
         <>
           {/* Chat area - when messages exist */}
           <div 
             ref={chatContainerRef}
-            className="chat-scroll flex-1 overflow-y-auto px-4 py-8 pb-40"
+            className="chat-scroll flex-1 overflow-y-auto px-4 py-8 pb-40 relative z-10"
           >
             <div className="max-w-3xl mx-auto space-y-6">
               {/* Mini header when chat is active */}
@@ -219,22 +153,17 @@ const Index = () => {
           </div>
 
           {/* Bottom fixed section - when messages exist */}
-          <div className="sticky bottom-0 pb-6 pt-4 px-4 bg-linear-to-t from-background via-background to-transparent">
+          <div className="sticky bottom-0 pb-6 pt-4 px-4 bg-linear-to-t from-background via-background to-transparent z-10">
             {/* Prompt buttons - show above input when clicked */}
             {hasPromptBeenClicked && (
-              <div className="flex justify-center mb-4">
-                <div className="flex flex-wrap justify-center gap-2 md:gap-3">
-                  {prompts.map((prompt) => (
-                    <PromptButton
-                      key={prompt.id}
-                      icon={prompt.icon}
-                      label={prompt.label}
-                      isActive={currentSection === prompt.id}
-                      onClick={() => handlePromptClick(prompt.id)}
-                      isPill={true}
-                    />
-                  ))}
-                </div>
+              <div className="mb-4">
+                <PromptSelector
+                  prompts={prompts}
+                  currentSection={currentSection}
+                  onPromptClick={handlePromptClick}
+                  isPill={true}
+                  showWithAnimation={false}
+                />
               </div>
             )}
 
@@ -245,19 +174,13 @@ const Index = () => {
 
             {/* Prompt buttons - show below input initially */}
             {!hasPromptBeenClicked && (
-              <div className="flex justify-center">
-                <div className="flex flex-wrap justify-center gap-2 md:gap-3">
-                  {prompts.map((prompt) => (
-                    <PromptButton
-                      key={prompt.id}
-                      icon={prompt.icon}
-                      label={prompt.label}
-                      isActive={currentSection === prompt.id}
-                      onClick={() => handlePromptClick(prompt.id)}
-                    />
-                  ))}
-                </div>
-              </div>
+              <PromptSelector
+                prompts={prompts}
+                currentSection={currentSection}
+                onPromptClick={handlePromptClick}
+                isPill={false}
+                showWithAnimation={false}
+              />
             )}
           </div>
         </>

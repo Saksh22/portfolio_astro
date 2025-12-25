@@ -40,7 +40,18 @@ export type SkillsData = {
 };
 
 export type FunFact = { emoji: string; fact: string };
-export type FunData = { intro: string; currentlyLearning: string; facts: FunFact[] };
+export type FunMedia = { 
+  type?: "video" | "gif"; 
+  url?: string; 
+  thumbnail?: string; 
+  caption?: string;
+};
+export type FunData = { 
+  intro: string; 
+  currentlyLearning: string; 
+  facts: FunFact[];
+  media?: FunMedia;
+};
 
 export type ContactData = {
   intro: string;

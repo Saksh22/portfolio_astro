@@ -62,6 +62,12 @@ const fun = defineCollection({
         fact: z.string(),
       })
     ),
+    media: z.object({
+      type: z.enum(["video", "gif"]).optional(),
+      url: z.string().optional(), // Can be URL or local path like /videos/my-video.mp4
+      thumbnail: z.string().optional(), // Can be URL or local path like /images/thumb.jpg
+      caption: z.string().optional(),
+    }).optional(),
   }),
 });
 

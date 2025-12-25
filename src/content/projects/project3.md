@@ -1,10 +1,15 @@
 ---
-title: "Project Alpha"
-description: "A modern web application built with React and TypeScript. Features include real-time updates and responsive design."
-tags: ["React", "TypeScript", "Tailwind"]
-github: "https://github.com/you/project-alpha"
-liveUrl: "https://project-alpha.com"
-color: "blue"
+title: Serverless Face Recognition Pipeline
+description: Developed a serverless video-to-frame processing pipeline that
+  handled 1,000 images in under 5 seconds using Lambda and Docker.
+tags:
+  - AWS Lambda
+  - Python
+  - FFmpeg
+  - S3
+github: https://github.com/Saksh22/serverless-face-recognition
+liveUrl: https://github.com/Saksh22/serverless-face-recognition
+color: amber
 featured: true
-order: 1
+order: 3
 ---

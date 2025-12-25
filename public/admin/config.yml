@@ -61,7 +61,7 @@ collections:
     files:
       - name: "skills"
         label: "Skills Section"
-        file: "src/content/site/skills.md"
+        file: "src/content/skills/skills.md"
         fields:
           - { name: "intro", label: "Intro Text", widget: "string" }
           - name: "categories"
@@ -91,6 +91,20 @@ collections:
             fields:
               - { name: "emoji", label: "Emoji", widget: "string" }
               - { name: "fact", label: "Fact", widget: "string" }
+          - name: "media"
+            label: "Media (Video/GIF)"
+            widget: "object"
+            required: false
+            fields:
+              - name: "type"
+                label: "Media Type"
+                widget: "select"
+                required: false
+                options: ["video", "gif"]
+                hint: "Optional: Leave empty to auto-detect from URL"
+              - { name: "url", label: "Media URL", widget: "string", required: false, hint: "YouTube, Vimeo, or direct video/GIF URL" }
+              - { name: "thumbnail", label: "Thumbnail URL (for videos)", widget: "string", required: false }
+              - { name: "caption", label: "Caption", widget: "string", required: false }
 
   - name: "contact"
     label: "Contact"

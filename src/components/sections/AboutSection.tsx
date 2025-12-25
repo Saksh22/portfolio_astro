@@ -1,6 +1,7 @@
 import { Badge } from "../../components/ui/badge";
 import { useTypingEffect } from "../../hooks/useTypeEffect";
 import { useCMS } from "../../context/CMSContext";
+import { useState, useEffect } from "react";
 
 
 
@@ -21,9 +22,33 @@ const AboutSection = ({ enableTyping = false }: AboutSectionProps) => {
     speed: 12,
   });
 
+  const [tagsAnimationComplete, setTagsAnimationComplete] = useState(!enableTyping);
+
+  // Calculate when tag chips animation completes
+  useEffect(() => {
+    if (!enableTyping) {
+      // If typing is disabled, show everything immediately
+      setTagsAnimationComplete(true);
+      return;
+    }
+
+    if (!isTypingIntro) {
+      // Animation duration: 800ms, delay per chip: 180ms
+      const lastChipDelay = (tags.length - 1) * 180;
+      const animationDuration = 800;
+      const totalTime = lastChipDelay + animationDuration;
+      
+      const timer = setTimeout(() => {
+        setTagsAnimationComplete(true);
+      }, totalTime);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isTypingIntro, enableTyping, tags.length]);
+
   const { displayedText: quoteText } = useTypingEffect({
     text: quote,
-    enabled: enableTyping && !isTypingIntro,
+    enabled: enableTyping && !isTypingIntro && tagsAnimationComplete,
     speed: 15,
   });
 
@@ -61,27 +86,31 @@ const AboutSection = ({ enableTyping = false }: AboutSectionProps) => {
             {isTypingIntro && <span className="animate-pulse">|</span>}
           </p>
           
-          <div className="flex flex-wrap gap-2">
-            {tags.map((tag: string, index:number) => (
-              <Badge 
-                key={tag} 
-                variant="secondary" 
-                className="px-3 py-1 animate-fade-up"
-                style={{ animationDelay: `${index * 100 + 500}ms` }}
-              >
-                {tag}
-              </Badge>
-            ))}
-          </div>
+          {!isTypingIntro && (
+            <div className="flex flex-wrap gap-2">
+              {tags.map((tag: string, index:number) => (
+                <Badge 
+                  key={tag} 
+                  variant="secondary" 
+                  className="px-3 py-1 opacity-0 animate-tag-appear"
+                  style={{ animationDelay: `${index * 180}ms` }}
+                >
+                  {tag}
+                </Badge>
+              ))}
+            </div>
+          )}
         </div>
       </div>
       
-      <div className="pt-4 border-t border-border">
-        <p className="text-muted-foreground italic min-h-8">
-          "{quoteText}"
-          {!isTypingIntro && quoteText.length < quote.length && <span className="animate-pulse">|</span>}
-        </p>
-      </div>
+      {tagsAnimationComplete && (
+        <div className="pt-4 border-t border-border">
+          <p className="text-muted-foreground italic min-h-8">
+            "{quoteText}"
+            {enableTyping && quoteText.length < quote.length && <span className="animate-pulse">|</span>}
+          </p>
+        </div>
+      )}
     </div>
   );
 };
