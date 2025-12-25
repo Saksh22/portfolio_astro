@@ -33,11 +33,15 @@ const Index = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const [currentSection, setCurrentSection] = useState<Section | null>(null);
+  const [hasPromptBeenClicked, setHasPromptBeenClicked] = useState(false);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
   const handlePromptClick = (section: Section) => {
     const prompt = prompts.find((p) => p.id === section);
     if (!prompt || isTyping) return;
+
+    // Mark that a prompt has been clicked
+    setHasPromptBeenClicked(true);
 
     // Add user message
     const userMessage: Message = {
@@ -93,95 +97,171 @@ const Index = () => {
 
   return (
     <div className="h-dvh flex flex-col">
-      {/* Chat area */}
-      <div 
-        ref={chatContainerRef}
-        className="chat-scroll flex-1 overflow-y-auto px-4 py-8 pb-40"
-      >
-        <div className="max-w-3xl mx-auto space-y-6">
-          {/* Initial header - only show when no messages */}
-          {messages.length === 0 && (
-            <div className="text-center py-12 animate-fade-up">
-              <div className="flex justify-center mb-6">
-                <ChatAvatar />
-              </div>
-              <p className="text-muted-foreground mb-1">Hey, I'm</p>
+      {/* Landing page - centered layout when no messages */}
+      {messages.length === 0 ? (
+        <div className="flex-1 flex items-center justify-center px-4">
+          <div className="w-full max-w-3xl mx-auto text-center space-y-8">
+            {/* Avatar */}
+            <div 
+              className="flex justify-center"
+              style={{ 
+                animation: "scale-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards",
+                opacity: 0 
+              }}
+            >
+              <ChatAvatar />
+            </div>
+            
+            {/* Greeting and Title */}
+            <div 
+              style={{ 
+                animation: "fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards",
+                opacity: 0 
+              }}
+            >
+              <p className="text-muted-foreground mb-2 text-lg">Hey, My Name is</p>
               <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-                AI Portfolio
+                Sakshi Khochare
               </h1>
-              <p className="text-muted-foreground">
-                Click on one of the prompts below to learn more about me!
-              </p>
             </div>
-          )}
+            <p 
+              className="text-muted-foreground"
+              style={{ 
+                animation: "fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards",
+                opacity: 0 
+              }}
+            >
+              Click on one of the prompts below to learn more about me!
+            </p>
+            {/* Chat Input */}
+            <div 
+              className="flex justify-center"
+              style={{ 
+                animation: "fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.7s forwards",
+                opacity: 0 
+              }}
+            >
+              <ChatInput />
+            </div>
 
-          {/* Mini header when chat is active */}
-          {messages.length > 0 && (
-            <div className="text-center pb-4 animate-fade-in">
-              <div className="flex justify-center mb-2">
-                <div className="w-20 h-20 rounded-full bg-linear-to-br from-primary/20 to-accent/10 flex items-center justify-center shadow-sm">
-                  <img src="/laptop.png" alt="Type Avatar" className="w-18 h-18 object-cover" />
-                </div>
+            {/* Prompt buttons */}
+            <div className="flex justify-center">
+              <div className="flex flex-wrap justify-center gap-2 md:gap-3">
+                {prompts.map((prompt, index) => (
+                  <div
+                    key={prompt.id}
+                    style={{ 
+                      animation: `fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.9 + index * 0.1}s forwards`,
+                      opacity: 0 
+                    }}
+                  >
+                    <PromptButton
+                      icon={prompt.icon}
+                      label={prompt.label}
+                      isActive={currentSection === prompt.id}
+                      onClick={() => handlePromptClick(prompt.id)}
+                    />
+                  </div>
+                ))}
               </div>
-              <h1 className="text-xl font-bold text-foreground">AI Portfolio</h1>
             </div>
-          )}
+          </div>
+        </div>
+      ) : (
+        <>
+          {/* Chat area - when messages exist */}
+          <div 
+            ref={chatContainerRef}
+            className="chat-scroll flex-1 overflow-y-auto px-4 py-8 pb-40"
+          >
+            <div className="max-w-3xl mx-auto space-y-6">
+              {/* Mini header when chat is active */}
+              <div className="text-center pb-4 animate-fade-in">
+                <div className="flex justify-center mb-2">
+                  <div className="w-20 h-20 rounded-full bg-linear-to-br from-primary/20 to-accent/10 flex items-center justify-center shadow-sm">
+                    <img src="/laptop.png" alt="Type Avatar" className="w-18 h-18 object-cover" />
+                  </div>
+                </div>
+                <h1 className="text-xl font-bold text-foreground">AI Portfolio</h1>
+              </div>
 
-          {/* Messages */}
-          {messages.map((message) => (
-            <div key={message.id} className="space-y-4">
-              {message.type === "user" ? (
-                <ChatMessage type="user" content={message.content} />
-              ) : (
-                <div className="animate-fade-up">
-                  <div className="bg-card rounded-2xl border border-border shadow-card p-6 md:p-8 ml-11">
-                    {message.section && renderSectionContent(message.section)}
+              {/* Messages */}
+              {messages.map((message) => (
+                <div key={message.id} className="space-y-4">
+                  {message.type === "user" ? (
+                    <ChatMessage type="user" content={message.content} />
+                  ) : (
+                    <div className="animate-fade-up">
+                      <div className="bg-card rounded-2xl border border-border shadow-card p-6 md:p-8 ml-11">
+                        {message.section && renderSectionContent(message.section)}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+
+              {/* Typing indicator */}
+              {isTyping && (
+                <div className="flex gap-3 animate-fade-up">
+                  <div className="shrink-0 w-8 h-8 rounded-full bg-secondary flex items-center justify-center">
+                    <User className="w-4 h-4 text-foreground" />
+                  </div>
+                  <div className="bg-card border border-border rounded-2xl rounded-bl-md px-4 py-3 shadow-card">
+                    <div className="flex gap-1">
+                      <span className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+                      <span className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+                      <span className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                    </div>
                   </div>
                 </div>
               )}
             </div>
-          ))}
+          </div>
 
-          {/* Typing indicator */}
-          {isTyping && (
-            <div className="flex gap-3 animate-fade-up">
-              <div className="shrink-0 w-8 h-8 rounded-full bg-secondary flex items-center justify-center">
-                <User className="w-4 h-4 text-foreground" />
-              </div>
-              <div className="bg-card border border-border rounded-2xl rounded-bl-md px-4 py-3 shadow-card">
-                <div className="flex gap-1">
-                  <span className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-                  <span className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-                  <span className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+          {/* Bottom fixed section - when messages exist */}
+          <div className="sticky bottom-0 pb-6 pt-4 px-4 bg-linear-to-t from-background via-background to-transparent">
+            {/* Prompt buttons - show above input when clicked */}
+            {hasPromptBeenClicked && (
+              <div className="flex justify-center mb-4">
+                <div className="flex flex-wrap justify-center gap-2 md:gap-3">
+                  {prompts.map((prompt) => (
+                    <PromptButton
+                      key={prompt.id}
+                      icon={prompt.icon}
+                      label={prompt.label}
+                      isActive={currentSection === prompt.id}
+                      onClick={() => handlePromptClick(prompt.id)}
+                      isPill={true}
+                    />
+                  ))}
                 </div>
               </div>
+            )}
+
+            {/* Chat input */}
+            <div className={hasPromptBeenClicked ? "" : "mb-4"}>
+              <ChatInput />
             </div>
-          )}
-        </div>
-      </div>
 
-      {/* Bottom fixed section */}
-      <div className="sticky bottom-0 pb-6 pt-4 px-4 bg-linear-to-t from-background via-background to-transparent">
-        {/* Chat input */}
-        <div className="mb-4">
-          <ChatInput />
-        </div>
-
-        {/* Prompt buttons */}
-        <div className="flex justify-center">
-          <div className="flex flex-wrap justify-center gap-2 md:gap-3">
-            {prompts.map((prompt) => (
-              <PromptButton
-                key={prompt.id}
-                icon={prompt.icon}
-                label={prompt.label}
-                isActive={currentSection === prompt.id}
-                onClick={() => handlePromptClick(prompt.id)}
-              />
-            ))}
+            {/* Prompt buttons - show below input initially */}
+            {!hasPromptBeenClicked && (
+              <div className="flex justify-center">
+                <div className="flex flex-wrap justify-center gap-2 md:gap-3">
+                  {prompts.map((prompt) => (
+                    <PromptButton
+                      key={prompt.id}
+                      icon={prompt.icon}
+                      label={prompt.label}
+                      isActive={currentSection === prompt.id}
+                      onClick={() => handlePromptClick(prompt.id)}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 };
