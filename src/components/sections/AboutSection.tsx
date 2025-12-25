@@ -70,7 +70,7 @@ const AboutSection = ({ enableTyping = false }: AboutSectionProps) => {
             {/* {about?.avatar ? (
               <img src="/laptop.png" alt={about.name} className="w-full h-full object-cover" />
             ) : ( */}
-              <span className="text-6xl">👋</span>
+              <span className="text-6xl"><img src="/me.jpeg" alt={about.name} className="w-full h-full object-cover" /></span>
             {/* )} */}
           </div>
         </div>

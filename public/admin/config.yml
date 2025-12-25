@@ -117,9 +117,9 @@ collections:
           - { name: "email", label: "Email", widget: "string", required: false }
           - { name: "linkedin", label: "LinkedIn URL", widget: "string", required: false }
           - { name: "github", label: "GitHub URL", widget: "string", required: false }
-          - { name: "twitter", label: "Twitter URL", widget: "string", required: false }
+          - { name: "phone", label: "Phone Number", widget: "string", required: false, hint: "e.g., +1 (555) 123-4567" }
           - name: "preferred"
             label: "Preferred Method"
             widget: "select"
             required: false
-            options: ["email", "linkedin", "github", "twitter"]
+            options: ["email", "linkedin", "github", "phone"]

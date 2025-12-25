@@ -78,8 +78,8 @@ const contact = defineCollection({
     email: z.string().email().optional(),
     linkedin: z.string().url().optional(),
     github: z.string().url().optional(),
-    twitter: z.string().url().optional(),
-    preferred: z.enum(["email", "linkedin", "github", "twitter"]).optional(),
+    phone: z.string().optional(),
+    preferred: z.enum(["email", "linkedin", "github", "phone"]).optional(),
   }),
 });
 

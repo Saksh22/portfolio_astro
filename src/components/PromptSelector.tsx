@@ -33,6 +33,7 @@ const PromptSelector = ({
               isActive={currentSection === prompt.id}
               onClick={() => onPromptClick(prompt.id)}
               isPill={isPill}
+              sectionId={prompt.id}
             />
           </div>
         ))}

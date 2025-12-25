@@ -1,4 +1,4 @@
-import { Mail, Linkedin, Github, Twitter } from "lucide-react";
+import { Mail, Linkedin, Github, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTypingEffect } from "@/hooks/useTypeEffect";
 import { useCMS } from "@/context/CMSContext";
@@ -33,7 +33,7 @@ const ContactSection = ({ enableTyping = false }: ContactSectionProps) => {
     { icon: Mail, label: "Email", href: contact?.email ? `mailto:${contact.email}` : null, color: "hover:text-red-500" },
     { icon: Linkedin, label: "LinkedIn", href: contact?.linkedin || null, color: "hover:text-blue-600" },
     { icon: Github, label: "GitHub", href: contact?.github || null, color: "hover:text-foreground" },
-    { icon: Twitter, label: "Twitter", href: contact?.twitter || null, color: "hover:text-sky-500" },
+    { icon: Phone, label: "Phone", href: contact?.phone ? `tel:${contact.phone}` : null, color: "hover:text-green-500" },
   ].filter(link => link.href);
 
   return (
@@ -51,8 +51,8 @@ const ContactSection = ({ enableTyping = false }: ContactSectionProps) => {
           <a
             key={link.label}
             href={link.href!}
-            target={link.label !== "Email" ? "_blank" : undefined}
-            rel={link.label !== "Email" ? "noopener noreferrer" : undefined}
+            target={link.label !== "Email" && link.label !== "Phone" ? "_blank" : undefined}
+            rel={link.label !== "Email" && link.label !== "Phone" ? "noopener noreferrer" : undefined}
             className="animate-fade-up"
             style={{ animationDelay: `${index * 100 + 400}ms`, opacity: 0, animationFillMode: 'forwards' }}
           >

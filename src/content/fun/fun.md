@@ -11,8 +11,8 @@ facts:
   - emoji: 🏃
     fact: I try to stay consistent with running.
 media:
-  type: video
-  url: portfolio/public/WhatsApp Video 2025-12-25 at 1.54.05 PM.mp4
+  type: gif
+  url: /golf.gif
   thumbnail: /images/video-thumb.jpg
   caption: I am really good at golf!
 ---

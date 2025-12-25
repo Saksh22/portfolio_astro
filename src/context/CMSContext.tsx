@@ -58,8 +58,8 @@ export type ContactData = {
   email?: string;
   linkedin?: string;
   github?: string;
-  twitter?: string;
-  preferred?: "email" | "linkedin" | "github" | "twitter";
+  phone?: string;
+  preferred?: "email" | "linkedin" | "github" | "phone";
 };
 
 type CMSData = {

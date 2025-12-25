@@ -144,9 +144,11 @@ const FunSection = ({ enableTyping = false }: FunSectionProps) => {
                 loading="lazy"
               />
               {media.caption && (
-                <p className="p-3 text-sm text-muted-foreground text-center bg-secondary/50">
-                  {media.caption}
-                </p>
+                <div className="px-4 py-3 bg-linear-to-r from-secondary/60 via-secondary/50 to-secondary/60 border-t border-border/30">
+                  <p className="text-sm text-foreground/90 text-center font-medium leading-relaxed">
+                    {media.caption}
+                  </p>
+                </div>
               )}
             </div>
           ) : media.type === "video" ? (
@@ -184,9 +186,11 @@ const FunSection = ({ enableTyping = false }: FunSectionProps) => {
                 </video>
               )}
               {media.caption && (
-                <p className="p-3 text-sm text-muted-foreground text-center bg-secondary/50">
-                  {media.caption}
-                </p>
+                <div className="px-4 py-3 bg-linear-to-r from-secondary/60 via-secondary/50 to-secondary/60 border-t border-border/30">
+                  <p className="text-sm text-foreground/90 text-center font-medium leading-relaxed">
+                    {media.caption}
+                  </p>
+                </div>
               )}
             </div>
           ) : (
